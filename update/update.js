@@ -3,7 +3,22 @@ const update = (state, commands) => {
   const stateKeys = Object.keys(state);
 
   stateKeys.forEach(key => {
-    nextState[key] = (commands[key] && commands[key].$set) || state[key];
+    const originValue = state[key];
+    const nextValue = commands[key] && commands[key].$set;
+
+    if (!!nextValue) {
+      nextState[key] = nextValue;
+      return;
+    }
+
+    if (
+      typeof originValue === "object" &&
+      Object.keys(originValue).length > 0
+    ) {
+      nextState[key] = update(originValue, commands[key]);
+    } else {
+      nextState[key] = originValue;
+    }
   });
 
   return nextState;
