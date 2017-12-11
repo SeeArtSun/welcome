@@ -5,6 +5,10 @@ const update = (state, commands) => {
   stateKeys.forEach(key => {
     const originValue = state[key];
     const nextValue = commands[key] && commands[key].$set;
+      
+    if(!!commands.$set) {
+      return Object.assign(nextState, commands.$set);
+    }
 
     if (!!nextValue) {
       nextState[key] = nextValue;
@@ -21,7 +25,7 @@ const update = (state, commands) => {
     }
   });
 
-  return nextState;
+return nextState;
 };
 
 module.exports = update;
