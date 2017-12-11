@@ -13,6 +13,8 @@ const update = (state, commands) => {
       return unshift.concat(state); 
     case "$merge":
       return Object.assign({}, state, commands.$merge);
+    case "$apply":
+      return commands.$apply(state);
     default:
       stateKeys.forEach(key => {
         const originValue = state[key];
