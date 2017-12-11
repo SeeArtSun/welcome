@@ -15,6 +15,10 @@ const update = (state, commands) => {
       return Object.assign({}, state, commands.$merge);
     case "$apply":
       return commands.$apply(state);
+    case "$splice": 
+      const splice = state.slice();
+      splice.splice(...commands.$splice[0]);
+      return splice;
     default:
       stateKeys.forEach(key => {
         const originValue = state[key];
