@@ -8,6 +8,9 @@ const update = (state, commands) => {
       return Object.assign({}, commands.$set);
     case "$push":
       return state.concat(commands.$push);
+    case "$unshift": 
+      const unshift = commands.$unshift.reverse();
+      return unshift.concat(state); 
     default:
       stateKeys.forEach(key => {
         const originValue = state[key];
