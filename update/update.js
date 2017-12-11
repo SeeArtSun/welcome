@@ -1,5 +1,5 @@
 const update = (state, commands) => {
-  const nextState = {};
+  let nextState;
   const stateKeys = Object.keys(state);
   const commandsKeys = Object.keys(commands);
 
@@ -20,22 +20,22 @@ const update = (state, commands) => {
       splice.splice(...commands.$splice[0]);
       return splice;
     default:
-      stateKeys.forEach(key => {
+      nextState = Array.isArray(state) ? state.slice() : Object.assign({}, state);
+    
+      commandsKeys.forEach(key => {
         const originValue = state[key];
         const nextValue = commands[key] && commands[key].$set;
-
+    
         if (!!nextValue) {
           nextState[key] = nextValue;
           return;
         }
-
+    
         if (
           typeof commands[key] === "object" &&
           Object.keys(commands[key]).length > 0
         ) {
           nextState[key] = update(originValue, commands[key]);
-        } else {
-          nextState[key] = originValue;
         }
       });
     break;
