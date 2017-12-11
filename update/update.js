@@ -4,16 +4,14 @@ const update = (state, commands) => {
   const commandsKeys = Object.keys(commands);
 
   switch (commandsKeys[0]) {
+    case "$set":
+      return Object.assign({}, commands.$set);
     case "$push":
       return state.concat(commands.$push);
     default:
       stateKeys.forEach(key => {
         const originValue = state[key];
         const nextValue = commands[key] && commands[key].$set;
-          
-        if(!!commands.$set) {
-          return Object.assign(nextState, commands.$set);
-        }
 
         if (!!nextValue) {
           nextState[key] = nextValue;
