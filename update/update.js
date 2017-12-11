@@ -30,8 +30,8 @@ const update = (state, commands) => {
         }
 
         if (
-          typeof originValue === "object" &&
-          Object.keys(originValue).length > 0
+          typeof commands[key] === "object" &&
+          Object.keys(commands[key]).length > 0
         ) {
           nextState[key] = update(originValue, commands[key]);
         } else {

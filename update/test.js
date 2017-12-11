@@ -46,15 +46,23 @@ describe("update", () => {
       });
     });
 
-    it("should support apply", () => {
-      expect(
-        update(2, {
-          $apply: function(x) {
-            return x * 2;
-          }
-        })
-      ).toBe(4);
-    });
+    describe("apply commands test", () => {
+      it("should support apply(basic)", () => {
+        expect(
+          update(2, {
+            $apply: function(x) {
+              return x * 2;
+            }
+          })
+        ).toBe(4);
+      });
+
+      it("should support apply(react example)", () => {
+        const state = {a: 5, b: 3};
+        const commands = {b: {$apply: function(x) {return x * 2;}}};
+        expect(update(state, commands)).toEqual({a: 5, b: 6});
+      });
+    })
 
     it("should support deep updates", () => {
       expect(
