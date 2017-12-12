@@ -8,29 +8,29 @@ const update = (state, commands) => {
       return Object.assign({}, commands.$set);
     case "$push":
       return state.concat(commands.$push);
-    case "$unshift": 
+    case "$unshift":
       const unshift = commands.$unshift.reverse();
-      return unshift.concat(state); 
+      return unshift.concat(state);
     case "$merge":
       return Object.assign({}, state, commands.$merge);
     case "$apply":
       return commands.$apply(state);
-    case "$splice": 
+    case "$splice":
       const splice = state.slice();
       splice.splice(...commands.$splice[0]);
       return splice;
     default:
       nextState = Array.isArray(state) ? state.slice() : Object.assign({}, state);
-    
+
       commandsKeys.forEach(key => {
         const originValue = state[key];
         const nextValue = commands[key] && commands[key].$set;
-    
+
         if (!!nextValue) {
           nextState[key] = nextValue;
           return;
         }
-    
+
         if (
           typeof commands[key] === "object" &&
           Object.keys(commands[key]).length > 0

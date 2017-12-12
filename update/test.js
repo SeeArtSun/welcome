@@ -31,12 +31,24 @@ describe("update", () => {
       expect(update({ a: "b" }, { $set: { c: "d" } })).toEqual({ c: "d" });
     });
 
-    it("should support push", () => {
-      expect(update([1], { $push: [7] })).toEqual([1, 7]);
+    describe("push commands test", () => {
+      it("should support push(basic)", () => {
+        expect(update([1], { $push: [7] })).toEqual([1, 7]);
+      });
+
+      it("should support push(array object)", () => {
+        expect(update({a: [1]}, { a: {$push: [7]} })).toEqual({a: [1, 7]});
+      });
     });
 
-    it("should support unshift", () => {
-      expect(update([1], { $unshift: [7] })).toEqual([7, 1]);
+    describe("unshift commands test", () => {
+      it("should support unshift(basic)", () => {
+        expect(update([1], { $unshift: [7] })).toEqual([7, 1]);
+      });
+
+      it("should support unshift(over 2 length of array)", () => {
+        expect(update([1], { $unshift: [7, 8] })).toEqual([8, 7, 1]);
+      });
     });
 
     it("should support merge", () => {
